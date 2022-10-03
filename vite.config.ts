@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import defineOptions from "unplugin-vue-define-options/vite";
 import Components from "unplugin-vue-components/vite";
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
+import removeConsole from "vite-plugin-remove-console";
 import { resolve } from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,6 +12,7 @@ export default defineConfig({
     vue({
       reactivityTransform: true
     }),
+    removeConsole(),
     defineOptions(),
     Components({
       dts: "./types/components.d.ts",
