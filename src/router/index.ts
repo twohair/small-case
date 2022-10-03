@@ -1,5 +1,5 @@
 import { isNil } from "lodash-unified";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import type { Route, RouteNormalized } from "/#/vue-route";
 const routes: Route[] = [
   {
@@ -19,7 +19,7 @@ const routes: Route[] = [
 ];
 const router = createRouter({
   routes,
-  history: createWebHistory(),
+  history: createWebHashHistory("/small-case/dist/"),
   strict: true,
   scrollBehavior(to, from: RouteNormalized, savedPosition) {
     return new Promise(resolve => {
