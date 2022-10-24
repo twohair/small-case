@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Route } from "/#/vue-route";
+import type { Route } from "/#/vue-router";
 const routes = useRouter().options.routes as Route[];
 </script>
 

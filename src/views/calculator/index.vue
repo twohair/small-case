@@ -10,10 +10,12 @@
 </template>
 
 <script setup lang="ts">
+import Decimal from "decimal.js";
 const resultDom = $ref<HTMLDivElement | null>(null);
 const contentArr = [1, 2, 3, "+", 4, 5, 6, "-", 7, 8, 9, "*", 0, ".", "=", "/"];
 let result = $ref("0");
 let isComputed = $ref(false);
+
 const isNotOperator = (target: string) =>
   target !== "+" &&
   target !== "-" &&
@@ -26,24 +28,66 @@ const isResultEndWidthOperator = () =>
   result.endsWith("*") ||
   result.endsWith("/") ||
   result.endsWith(".");
+const isStartWidthOperator = (target: string) =>
+  target.startsWith("+") ||
+  target.startsWith("-") ||
+  target.startsWith("*") ||
+  target.startsWith("/");
+
+const calculate = (formula: string) => {
+  const reg = /(?=[+|\-|*|/])/g;
+  const formulaArr = formula.split(reg);
+  const result = formulaArr.reduce((p, c) => {
+    if (!isStartWidthOperator(c)) {
+      return p.plus(c);
+    }
+    switch (c[0]) {
+      case "+":
+      case "-":
+        return p.plus(c);
+      case "*":
+        return p.mul(c.slice(1, c.length));
+      case "/":
+        return p.div(c.slice(1, c.length));
+      default:
+        throw "error";
+    }
+  }, new Decimal("0"));
+  return result.toString();
+};
 const clickHandler = (e: PointerEvent) => {
   const target = e.target as HTMLDivElement;
   if (target.classList.value !== "item") return;
   const clickContent = target.innerHTML;
   if (clickContent === "=") {
-    result = eval(result).toString();
+    result = calculate(result);
     isComputed = true;
   } else if (clickContent === "0") {
     result !== "0" &&
       ((isComputed && (isComputed = false)) || (result += clickContent));
+  } else if (clickContent === ".") {
+    const tempArr = result.split(/(?=[+|\-|*|/])/g);
+    if (tempArr[tempArr.length - 1].indexOf(".") !== -1) return;
+    result += clickContent;
   } else {
     !isComputed &&
       clickContent !== "0" &&
       result === "0" &&
       isNotOperator(clickContent) &&
       (result = "");
-    if (!isNotOperator(clickContent) && isResultEndWidthOperator()) return;
-    isComputed && (isComputed = false);
+    if (!isNotOperator(clickContent) && isResultEndWidthOperator()) {
+      console.log(clickContent);
+      result.match(/.$/)![0] !== "." &&
+        clickContent !== "." &&
+        (result = result.replace(/.$/, clickContent));
+      return;
+    }
+
+    if (isComputed && result === "0") {
+      isComputed = false;
+      result = clickContent;
+      return;
+    }
     result += clickContent;
   }
 };

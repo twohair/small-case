@@ -1,6 +1,6 @@
 import { isNil } from "lodash-unified";
 import { createRouter, createWebHashHistory } from "vue-router";
-import type { Route, RouteNormalized } from "/#/vue-route";
+import type { Route, RouteNormalized } from "/#/vue-router";
 const routes: Route[] = [
   {
     name: "menu",

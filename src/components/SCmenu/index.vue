@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Route } from "/#/vue-route";
+import type { Route } from "/#/vue-router";
 import { withDefaults } from "vue";
 
 interface Props {

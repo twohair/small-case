@@ -1,7 +1,7 @@
 {
   "name": "small-case",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^3.2.12",
+    "decimal.js": "^10.4.2",
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.2",
     "vue": "^3.2.37",
